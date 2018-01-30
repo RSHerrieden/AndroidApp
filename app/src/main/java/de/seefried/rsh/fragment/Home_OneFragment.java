@@ -173,10 +173,10 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
                 outputplan.add(schoolroom);
 
                 // check if dropped
-                if (dropped == "0") {
-                    outputplan.add("✔️");
+                if (dropped.equals("0")) {
+                    outputplan.add("✓");
                 } else {
-                    outputplan.add("✖️");
+                    outputplan.add("×");
                 }
             }
 
