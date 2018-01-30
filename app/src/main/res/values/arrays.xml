@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+RS-Herrieden
+Copyright (C) 2018  Noah Seefried and Moritz Fromm
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string-array name="pref_update_interval_entries">
+        <item>Aus</item>
+        <item>30 Sekunden</item>
+        <item>60 Sekunden</item>
+        <item>90 Sekunden</item>
+        <item>120 Sekunden</item>
+        <item>240 Sekunden</item>
+    </string-array>
+    <string-array name="pref_update_interval_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="pref_schoolclass_entries">
+        <item>Alle Klassen anzeigen</item>
+
+        <item>05a</item>
+        <item>05b</item>
+        <item>05c</item>
+        <item>05d</item>
+
+        <item>06a</item>
+        <item>06b</item>
+        <item>06c</item>
+        <item>06d</item>
+
+        <item>07a</item>
+        <item>07b</item>
+        <item>07c</item>
+        <item>07d</item>
+
+        <item>08a</item>
+        <item>08b</item>
+        <item>08c</item>
+        <item>08d</item>
+
+        <item>09a</item>
+        <item>09b</item>
+        <item>09c</item>
+        <item>09d</item>
+
+        <item>10a</item>
+        <item>10b</item>
+        <item>10c</item>
+        <item>10d</item>
+    </string-array>
+    <string-array name="pref_schoolclass_values">
+        <item>alle</item>
+
+        <item>05%25a</item>
+        <item>05%25b</item>
+        <item>05%25c</item>
+        <item>05%25d</item>
+
+        <item>06%25a</item>
+        <item>06%25b</item>
+        <item>06%25c</item>
+        <item>06%25d</item>
+
+        <item>07%25a</item>
+        <item>07%25b</item>
+        <item>07%25c</item>
+        <item>07%25d</item>
+
+        <item>08%25a</item>
+        <item>08%25b</item>
+        <item>08%25c</item>
+        <item>08%25d</item>
+
+        <item>09%25a</item>
+        <item>09%25b</item>
+        <item>09%25c</item>
+        <item>09%25d</item>
+
+        <item>10%25a</item>
+        <item>10%25b</item>
+        <item>10%25c</item>
+        <item>10%25d</item>
+    </string-array>
+</resources>

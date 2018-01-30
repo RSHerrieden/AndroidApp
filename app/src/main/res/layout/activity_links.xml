@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+RS-Herrieden
+Copyright (C) 2018  Noah Seefried and Moritz Fromm
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    </android.support.design.widget.AppBarLayout>
+
+    <TextView
+        android:id="@+id/TextView_RSHLinks"
+        android:layout_width="fill_parent"
+        android:layout_height="417dp"
+        android:layout_marginTop="55dp"
+        android:autoLink="web"
+        android:gravity="center_horizontal"
+        android:linksClickable="true"
+        android:text="
+    Webseite: \n
+    realschule-herrieden.de
+    \n
+    \n
+    Terminkalender: \n
+    realschule-herrieden.de/startseite/termine
+    \n
+    \n
+    Formulare und Downloads: \n
+    realschule-herrieden.de/startseite/downloads
+    \n
+    \n
+    Neuigkeiten: \n
+    realschule-herrieden.de/schulleben/neuigkeiten
+    \n
+    \n
+    Schulbetrieb (+Busfahrpläne): \n
+    realschule-herrieden.de/infoservice/schulbetrieb
+    \n
+    \n
+    Notenberechnung: \n
+    realschule-herrieden.de/infoservice/notenberechnung"
+        android:textSize="14sp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+</LinearLayout>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+RS-Herrieden
+Copyright (C) 2018  Noah Seefried and Moritz Fromm
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string color="@android:color/white" name="app_name">RS Herrieden</string>
+    <string name="rsh">Realschule Herrieden</string>
+    <string name="app_description">Offizielle App der Realschule Herrieden</string>
+
+    <string name="button_done">Erledigt</string>
+    <string name="add_task">Neue Aufgabe</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="openDrawer">open_drawer</string>
+    <string name="closeDrawer">close_drawer</string>
+
+    <!-- Navigation Drawer menu labels -->
+    <string name="nav_home">Startseite</string>
+    <string name="nav_todo">Aufgabenliste</string>
+    <string name="nav_links">Nützliche Links</string>
+    <string name="nav_settings">Einstellungen</string>
+    <string name="nav_about_us">Über uns</string>
+    <string name="nav_status">Status</string>
+    <string name="nav_help">Hilfe</string>
+
+    <!-- Toolbar titles in navigation menu -->
+    <string-array name="nav_item_activity_titles">
+        <item>Realschule Herrieden</item>
+    </string-array>
+
+    <string name="activity_title_todo">Aufgabenliste</string>
+    <string name="activity_title_links">Nützliche Links</string>
+    <string name="activity_title_settings">Einstellungen</string>
+    <string name="activity_title_about_us">Über uns</string>
+    <string name="activity_title_status">Status</string>
+    <string name="activity_title_help">Hilfe</string>
+
+
+    <!-- Settings -->
+
+    <!-- General -->
+
+    <string name="title_schoolclass">Klasse</string>
+    <string name="default_title_schoolclass">Keine Klasse</string>
+    <string name="summary_title_schoolclass">Klasse auswählen</string>
+    <string name="key_schoolclass_name">key_schoolclass</string>
+    <string name="key_schoolclass_interval">key_schoolclass_interval</string>
+
+    <string name="title_update_level">Aktualisierungsintervall</string>
+    <string name="default_update_level">30 Sekunden</string>
+    <string name="summary_update">Auswählen</string>
+    <string name="key_update_name">key_update</string>
+    <string name="key_update_interval">key_update_interval</string>
+
+    <string name="title_auto_upload">Aktualisierung</string>
+    <string name="summary_update_only_over_wifi">Nur über WLAN aktualisieren</string>
+    <string name="key_upload_over_wifi">key_upload_over_wifi</string>
+
+
+    <!-- About -->
+    <string name="pref_header_about">Über</string>
+    <string name="summary_about">
+    Offizielle App der Realschule Herrieden \n
+    \n
+    &#169; Noah Seefried \n
+    &#169; Moritz Fromm \n
+    \n
+    Lizenz: GNU AGPL v3
+    </string>
+
+    <string name="title_version">App-Version</string>
+    <string name="app_version">0.5.1b1</string>
+
+    <string name="summary_support">Ideen, Wünsche und sonstige Fragen? Wir helfen gerne!</string>
+    <string name="choose_email_client">E-Mail Programm wählen</string>
+    <string name="title_send_feedback">E-Mail senden</string>
+
+    <string name="title_code">GitHub</string>
+    <string name="summary_code">Quellcode (Bugs bitte hier melden)</string>
+    <string name="url_code">https://github.com/RSHerrieden/AndroidApp</string>
+
+    <string name="title_terms">Software Lizenzen</string>
+    <string name="url_terms">https://rsh.noah-seefried.de/info/used-softwareDE.html</string>
+
+    <string name="privacy_policy">Datenschutzerklärung</string>
+    <string name="url_privacy">https://rsh.noah-seefried.de/info/privacy-policyDE.html</string>
+
+    <string name="key_send_feedback">key_send_feedback</string>
+
+</resources>
