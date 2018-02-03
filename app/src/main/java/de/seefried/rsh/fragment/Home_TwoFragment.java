@@ -38,8 +38,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import de.seefried.rsh.R;
 
@@ -110,17 +115,42 @@ public class Home_TwoFragment extends Fragment implements SwipeRefreshLayout.OnR
             List<String> output = new ArrayList<>();
 
             JSONObject object = new JSONObject(JSON);
-            JSONArray notificationsArray = object.getJSONArray("notifications");
 
-            for(int i = 0; i < notificationsArray.length(); ++i) {
-                JSONObject JsonNotifications  = notificationsArray.getJSONObject(i);
-                String content = JsonNotifications.getString("content");
-                output.add(content);
+            JSONObject datefordata = object.getJSONObject("date");
+            String date = datefordata.getString("string");
+
+            SimpleDateFormat format1 = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+            Date dt1 = format1.parse(date);
+            DateFormat format2 = new SimpleDateFormat("EEEE", Locale.GERMANY);
+            String date_day = format2.format(dt1);
+
+            output.add("Mitteilungen für " + date_day + ", " + date);
+
+            JSONObject amount = object.getJSONObject("amount");
+            String amount_notifications = amount.getString("notifications");
+
+            if (amount_notifications.equals("0")) {
+                output.add("");
+                output.add("Heute");
+                output.add("keine");
+                output.add("Mitteilung");
+                output.add("");
+            } else {
+
+                JSONArray notificationsArray = object.getJSONArray("notifications");
+
+                for (int i = 0; i < notificationsArray.length(); ++i) {
+                    JSONObject JsonNotifications = notificationsArray.getJSONObject(i);
+                    String content = JsonNotifications.getString("content");
+                    output.add(content);
+                }
             }
 
             Home_TwoFragment_Adapter adapter = new Home_TwoFragment_Adapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, output);
             NotificationGridView.setAdapter(adapter);
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         // Close popup dialog, disabled

@@ -43,8 +43,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import de.seefried.rsh.R;
 
@@ -142,8 +147,14 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
             List<String> outputplan = new ArrayList<>();
             List<String> outputdate = new ArrayList<>();
 
-
             JSONObject object = new JSONObject(JSON);
+
+            JSONObject amount = object.getJSONObject("amount");
+            String amount_replacements = amount.getString("replacements");
+
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String pref_schoolclass = sp.getString("key_schoolclass", "");
+            String format_pref_schoolclass = pref_schoolclass.replace("%25", "");
 
             // date
             JSONObject datefordata = object.getJSONObject("date");
@@ -152,31 +163,66 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
             // week
             String week = object.getString("week");
 
-            outputdate.add("Vertretungen für " + date + "      Woche: " + week);
+            SimpleDateFormat date_day_format1 = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+            Date dt1 = date_day_format1.parse(date);
+            DateFormat date_day_format2 = new SimpleDateFormat("EE", Locale.GERMANY);
+            String date_day = date_day_format2.format(dt1);
 
-            JSONArray planArray = object.getJSONArray("replacements");
+            outputdate.add("Vertretungen für " + format_pref_schoolclass + ", " + date_day + " " + date + "      Woche: " + week);
 
-            // replacements
-            for(int i = 0; i < planArray.length(); ++i) {
-                JSONObject JSONAPI  = planArray.getJSONObject(i);
-                String schoolclass = JSONAPI.getString("schoolclass");
-                String schoolsubject = JSONAPI.getString("schoolsubject");
-                String schoolhour = JSONAPI.getString("schoolhour");
-                String schoolroom = JSONAPI.getString("schoolroom");
-                String dropped = JSONAPI.getString("dropped");
-                // String out_test = schoolclass + "   " + representations + "   " + schoolsubject + "   " + schoolhour;
-
-                String format_schoolhour = schoolhour + ". Stunde";
-                outputplan.add(schoolclass);
-                outputplan.add(format_schoolhour);
-                outputplan.add(schoolsubject);
-                outputplan.add(schoolroom);
-
-                // check if dropped
-                if (dropped.equals("0")) {
-                    outputplan.add("✓");
+            if (amount_replacements.equals("0")) {
+                // output one free line
+                outputplan.add("");
+                outputplan.add("");
+                outputplan.add("");
+                outputplan.add("");
+                outputplan.add("");
+                // output information if no representations
+                if (pref_schoolclass.equals("alle")) {
+                    outputplan.add("");
+                    outputplan.add("Heute");
+                    outputplan.add("keine");
+                    outputplan.add("Vertretung");
+                    outputplan.add("");
                 } else {
-                    outputplan.add("×");
+                    outputplan.add("Heute");
+                    outputplan.add("keine");
+                    outputplan.add("Vertretung");
+                    outputplan.add("für");
+                    outputplan.add(format_pref_schoolclass);
+                }
+            } else {
+
+                JSONArray planArray = object.getJSONArray("replacements");
+
+                // replacements
+                for(int i = 0; i < planArray.length(); ++i) {
+                    JSONObject JSONAPI = planArray.getJSONObject(i);
+                    String schoolclass = JSONAPI.getString("schoolclass");
+                    String schoolsubject = JSONAPI.getString("schoolsubject");
+                    String schoolhour = JSONAPI.getString("schoolhour");
+                    String schoolroom = JSONAPI.getString("schoolroom");
+                    String dropped = JSONAPI.getString("dropped");
+                    // String out_test = schoolclass + "   " + representations + "   " + schoolsubject + "   " + schoolhour;
+
+                    String format_schoolhour = schoolhour + ". Stunde";
+                    outputplan.add(schoolclass);
+                    outputplan.add(format_schoolhour);
+
+                    if (schoolsubject.equals("")) {
+                        outputplan.add("➔\t");
+                    } else {
+                        outputplan.add(schoolsubject);
+                    }
+
+                    outputplan.add(schoolroom);
+
+                    // check if dropped
+                    if (dropped.equals("0")) {
+                        outputplan.add("✓");
+                    } else {
+                        outputplan.add("×");
+                    }
                 }
             }
 
@@ -185,6 +231,8 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
             Home_OneFragment_DateAdapter dateadapter = new Home_OneFragment_DateAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, outputdate);
             LastUpdateGrid.setAdapter(dateadapter);
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         // Close popup dialog, disabled
