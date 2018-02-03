@@ -37,7 +37,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <ListPreference
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/black"
-            android:defaultValue="1"
+            android:defaultValue="0"
             android:dialogTitle="@string/title_update_level"
             android:entries="@array/pref_update_interval_entries"
             android:entryValues="@array/pref_update_interval_values"
