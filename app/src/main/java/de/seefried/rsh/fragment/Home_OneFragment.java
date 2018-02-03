@@ -154,7 +154,40 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
 
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
             String pref_schoolclass = sp.getString("key_schoolclass", "");
-            String format_pref_schoolclass = pref_schoolclass.replace("%25", "");
+
+            if (pref_schoolclass.equals("")) {
+                // this is a bugfix for the first start, i cannot load the settings before user open it
+
+                // date
+                JSONObject datefordata = object.getJSONObject("date");
+                String date = datefordata.getString("string");
+
+                // week
+                String week = object.getString("week");
+
+                SimpleDateFormat date_day_format1 = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+                Date dt1 = date_day_format1.parse(date);
+                DateFormat date_day_format2 = new SimpleDateFormat("EE", Locale.GERMANY);
+                String date_day = date_day_format2.format(dt1);
+
+                outputdate.add("Vertretungen für alle, " + date_day + " " + date + "      Woche: " + week);
+            } else {
+                // date
+                JSONObject datefordata = object.getJSONObject("date");
+                String date = datefordata.getString("string");
+
+                // week
+                String week = object.getString("week");
+
+                SimpleDateFormat date_day_format1 = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+                Date dt1 = date_day_format1.parse(date);
+                DateFormat date_day_format2 = new SimpleDateFormat("EE", Locale.GERMANY);
+                String date_day = date_day_format2.format(dt1);
+
+                String format_pref_schoolclass = pref_schoolclass.replace("%25", "");
+
+                outputdate.add("Vertretungen für " + format_pref_schoolclass + ", " + date_day + " " + date + "      Woche: " + week);
+            }
 
             // date
             JSONObject datefordata = object.getJSONObject("date");
@@ -167,8 +200,6 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
             Date dt1 = date_day_format1.parse(date);
             DateFormat date_day_format2 = new SimpleDateFormat("EE", Locale.GERMANY);
             String date_day = date_day_format2.format(dt1);
-
-            outputdate.add("Vertretungen für " + format_pref_schoolclass + ", " + date_day + " " + date + "      Woche: " + week);
 
             if (amount_replacements.equals("0")) {
                 // output one free line
@@ -189,7 +220,7 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
                     outputplan.add("keine");
                     outputplan.add("Vertretung");
                     outputplan.add("für");
-                    outputplan.add(format_pref_schoolclass);
+                    outputplan.add("dich");
                 }
             } else {
 
