@@ -131,10 +131,7 @@ public class Home_TwoFragment extends Fragment implements SwipeRefreshLayout.OnR
 
             if (amount_notifications.equals("0")) {
                 output.add("");
-                output.add("Heute");
-                output.add("keine");
-                output.add("Mitteilung");
-                output.add("");
+                output.add("Heute keine Mitteilung");
             } else {
 
                 JSONArray notificationsArray = object.getJSONArray("notifications");
