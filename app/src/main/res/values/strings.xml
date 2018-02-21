@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <resources>
-    <string color="@android:color/white" name="app_name">RS Herrieden</string>
+    <string color="@android:color/white" name="app_name">RSH</string>
     <string name="rsh">Realschule Herrieden</string>
     <string name="app_description">Offizielle App der Realschule Herrieden</string>
 
