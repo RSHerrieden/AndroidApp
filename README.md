@@ -32,7 +32,7 @@ Copy it onto your smartphone or install with ``adb install app.apk`` on any andr
 ## Privacy
 
 We don't collect any data on your device. <br>
-To see what we are logging, check out this [Privacy Policy](https://github.com/RSHerrieden/AndroidApp/blob/master/PrivacyPolicyEN) <br>
+To see what we are logging, check out this [Privacy Policy](https://github.com/RSHerrieden/AndroidApp/blob/master/docs/PrivacyPolicyEN) <br>
 We will never pass any data to third parties! <br>
 
 ## Built With
