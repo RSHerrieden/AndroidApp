@@ -63,7 +63,6 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
     GridView PlanGrid;
     GridView LastUpdateGrid;
     SwipeRefreshLayout swipeLayout;
-    LinearLayout parentPanel;
     TextView testview;
 
     public Home_OneFragment() {
@@ -85,23 +84,11 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
         PlanGrid = (GridView)view.findViewById(R.id.PlanGridView);
         LastUpdateGrid = (GridView)view.findViewById(R.id.LastUpdateGridView);
         swipeLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_container);
-        parentPanel = (LinearLayout)view.findViewById(R.id.parentPanel);
 
         // Popup dialog, disabled
         // dialog = new ProgressDialog(getActivity());
         // dialog.setMessage("Laden...");
         // dialog.show();
-
-        swipeLayout.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                if (parentPanel.getScrollY() == 0) {
-                    swipeLayout.setEnabled(true);
-                } else {
-                    swipeLayout.setEnabled(false);
-                }
-            }
-        });
 
         // SwipeRefresh
         swipeLayout.setOnRefreshListener(this);
