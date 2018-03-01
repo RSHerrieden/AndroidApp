@@ -2,6 +2,8 @@
 
 This is the open source android application from Realschule Herrieden
 
+**Information for Google Play Version:**  The App Updater ([HomeFragment.java](https://github.com/RSHerrieden/AndroidApp/blob/master/app/src/main/java/de/seefried/rsh/fragment/HomeFragment.java) line 71 to 77) has been removed, as the update notification takes over Google. The library is still available in the app.
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and can compile it on your own local machine. You can audit the source code on your own and then trust it.
@@ -41,7 +43,8 @@ We will never pass any data to third parties! <br>
 
 ## Versioning
 
-For the versions available, see the [Releases](https://github.com/RSHerrieden/AndroidApp/releases). 
+For the apk versions available, see the [Releases](https://github.com/RSHerrieden/AndroidApp/releases). <br>
+Also available in GooglePlay: https://play.google.com/store/apps/details?id=de.seefried.rsh
 
 ## Authors
 
