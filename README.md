@@ -1,3 +1,5 @@
+![AGPL Logo](https://www.gnu.org/graphics/agplv3-155x51.png)
+
 # Realschule Herrieden Android App [![Build Status](https://travis-ci.org/RSHerrieden/AndroidApp.svg?branch=master)](https://travis-ci.org/RSHerrieden/AndroidApp)
 
 This is the open source android application from Realschule Herrieden
