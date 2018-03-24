@@ -198,12 +198,12 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
                 // output information if no representations
                 if (pref_schoolclass.equals("alle")) {
                     outputplan.add("");
-                    outputplan.add("Heute");
-                    outputplan.add("keine");
+                    outputplan.add("Keine");
+                    outputplan.add("");
                     outputplan.add("Vertretung");
                     outputplan.add("");
                 } else {
-                    outputplan.add("Heute");
+                    outputplan.add("Aktuell");
                     outputplan.add("keine");
                     outputplan.add("Vertretung");
                     outputplan.add("für");
