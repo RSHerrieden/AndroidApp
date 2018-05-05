@@ -112,9 +112,13 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                // Popup error dialog, disabled
-                   Toast.makeText(getActivity().getApplicationContext(), "Es ist ein Fehler aufgetreten!", Toast.LENGTH_LONG).show();
-                // dialog.dismiss();
+                Toast.makeText(getActivity().getApplicationContext(), "Es ist ein Fehler aufgetreten!", Toast.LENGTH_LONG).show();
+
+                List<String> outputerror = new ArrayList<>();
+                outputerror.add("Keine Internetverbindung vorhanden!");
+
+                Home_OneFragment_DateAdapter dateadapter = new Home_OneFragment_DateAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, outputerror);
+                LastUpdateGrid.setAdapter(dateadapter);
             }
         });
 

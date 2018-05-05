@@ -93,9 +93,13 @@ public class Home_TwoFragment extends Fragment implements SwipeRefreshLayout.OnR
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                // Popup error dialog, disabled
                 Toast.makeText(getActivity().getApplicationContext(), "Es ist ein Fehler aufgetreten!", Toast.LENGTH_LONG).show();
-                // dialog.dismiss();
+
+                List<String> outputerror = new ArrayList<>();
+                outputerror.add("Keine Internetverbindung vorhanden!");
+
+                Home_TwoFragment_Adapter adapter = new Home_TwoFragment_Adapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, outputerror);
+                NotificationGridView.setAdapter(adapter);
             }
         });
 
