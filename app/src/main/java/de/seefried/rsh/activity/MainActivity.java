@@ -169,6 +169,10 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                         drawer.closeDrawers();
                         return true;
+                    case R.id.nav_status:
+                        startActivity(new Intent(MainActivity.this, StatusActivity.class));
+                        drawer.closeDrawers();
+                        return true;
                     default:
                         navItemIndex = 0;
                 }

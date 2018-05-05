@@ -18,9 +18,17 @@
 
 package de.seefried.rsh.activity;
 
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
 
 import de.seefried.rsh.R;
 
@@ -28,12 +36,46 @@ import de.seefried.rsh.R;
 public class StatusActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-    //private WebView web_apistatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status);
+
+        final TextView api_statusTextView = findViewById(R.id.api_status);
+        final TextView server_statusTextView = findViewById(R.id.server_status);
+        server_statusTextView.setTextColor(Color.RED);
+        api_statusTextView.setTextColor(Color.RED);
+
+        // not working
+
+        class ConnectionCheck extends AsyncTask<String, Void, String> {
+
+            InetAddress ip;
+
+
+            @Override
+            protected String doInBackground(String... strings) {
+                try
+
+                {
+                    ip = InetAddress.getByName("1.1.1.1");
+                    if (ip.isReachable(1000)) {
+                        server_statusTextView.setText("online");
+                    } else {
+                        server_statusTextView.setText("offline");
+                    }
+                }
+                catch(IOException e)
+
+                {
+                    // if the call to getByAddress fails, then consider the state to be offline
+                    server_statusTextView.setText("error");
+                    e.printStackTrace();
+                }
+                return "Done";
+            }
+        }
 
         // import Toolbar and goback arrow
         toolbar = (Toolbar) findViewById(R.id.toolbar);

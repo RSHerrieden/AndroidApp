@@ -54,6 +54,16 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
     <!-- Settings -->
+    
+    
+    <!-- Status -->
+
+        <!-- Server -->
+        <string name="online">online</string>
+        <string name="offline">offline</string>
+        <!-- API -->
+        <string name="working">working</string>
+        <string name="no_information">no information</string>
 
     <!-- General -->
 
