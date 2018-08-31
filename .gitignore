@@ -5,6 +5,9 @@
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
+/.idea/codeStyles
+/.idea/gradle.xml
+/.idea/caches
 .DS_Store
 /build
 /captures

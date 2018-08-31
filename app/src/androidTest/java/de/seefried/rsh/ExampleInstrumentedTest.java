@@ -21,6 +21,10 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("de.seefried.rsh", appContext.getPackageName());
+        if (BuildConfig.DEBUG) {
+            assertEquals("de.seefried.rsh.debug", appContext.getPackageName());
+        } else {
+            assertEquals("de.seefried.rsh", appContext.getPackageName());
+        }
     }
 }
