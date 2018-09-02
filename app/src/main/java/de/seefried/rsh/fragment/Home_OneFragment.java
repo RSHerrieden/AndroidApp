@@ -56,7 +56,7 @@ import de.seefried.rsh.R;
 
 public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    String url = "https://rsh.noah-seefried.de/v1.0/index.php";
+    String url = "https://rsh.noah-seefried.de/v2.0/replacements";
 
     // ProgressDialog dialog;  // needed for popup dialog, disabled
 
@@ -104,7 +104,7 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
 
 
         // request data from server
-        StringRequest request = new StringRequest(url + "?class=" + pref_schoolclass, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(url + "//" + pref_schoolclass, new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
                 parseJsonData(string);
@@ -140,8 +140,21 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
 
             JSONObject object = new JSONObject(JSON);
 
-            JSONObject amount = object.getJSONObject("amount");
-            String amount_replacements = amount.getString("replacements");
+            String amount = object.getString("amount");
+            JSONObject meta = object.getJSONObject("meta");
+
+            // date
+            String apiDate = meta.getString("date");
+
+            // week
+            String week = object.getString("week");
+
+            SimpleDateFormat date_day_format1 = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMANY);
+            Date dt1 = date_day_format1.parse(apiDate);
+            date_day_format1.applyPattern("dd.MM.yyyy");
+            String date = date_day_format1.format(dt1);
+            DateFormat date_day_format2 = new SimpleDateFormat("EE", Locale.GERMANY);
+            String date_day = date_day_format2.format(dt1);
 
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
             String pref_schoolclass = sp.getString("key_schoolclass", "");
@@ -149,50 +162,14 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
             if (pref_schoolclass.equals("")) {
                 // this is a bugfix for the first start, i cannot load the settings before user open it
 
-                // date
-                JSONObject datefordata = object.getJSONObject("date");
-                String date = datefordata.getString("string");
-
-                // week
-                String week = object.getString("week");
-
-                SimpleDateFormat date_day_format1 = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
-                Date dt1 = date_day_format1.parse(date);
-                DateFormat date_day_format2 = new SimpleDateFormat("EE", Locale.GERMANY);
-                String date_day = date_day_format2.format(dt1);
-
                 outputdate.add("Vertretungen für alle, " + date_day + " " + date + "      Woche: " + week);
             } else {
-                // date
-                JSONObject datefordata = object.getJSONObject("date");
-                String date = datefordata.getString("string");
-
-                // week
-                String week = object.getString("week");
-
-                SimpleDateFormat date_day_format1 = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
-                Date dt1 = date_day_format1.parse(date);
-                DateFormat date_day_format2 = new SimpleDateFormat("EE", Locale.GERMANY);
-                String date_day = date_day_format2.format(dt1);
-
                 String format_pref_schoolclass = pref_schoolclass.replace("%25", "");
 
                 outputdate.add("Vertretungen für " + format_pref_schoolclass + ", " + date_day + " " + date + "      Woche: " + week);
             }
 
-            // date
-            JSONObject datefordata = object.getJSONObject("date");
-            String date = datefordata.getString("string");
-
-            // week
-            String week = object.getString("week");
-
-            SimpleDateFormat date_day_format1 = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
-            Date dt1 = date_day_format1.parse(date);
-            DateFormat date_day_format2 = new SimpleDateFormat("EE", Locale.GERMANY);
-            String date_day = date_day_format2.format(dt1);
-
-            if (amount_replacements.equals("0")) {
+            if (amount.equals("0")) {
                 // output one free line
                 outputplan.add("");
                 outputplan.add("");
@@ -240,7 +217,7 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
                     outputplan.add(schoolroom);
 
                     // check if dropped
-                    if (dropped.equals("0")) {
+                    if (dropped.equals("false")) {
                         outputplan.add("✓");
                     } else {
                         outputplan.add("×");

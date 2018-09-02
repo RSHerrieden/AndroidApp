@@ -52,7 +52,7 @@ import de.seefried.rsh.R;
 public class Home_TwoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
         SwipeRefreshLayout swipeLayout;
 
-    String url = "https://rsh.noah-seefried.de/v1.0/index.php";
+    String url = "https://rsh.noah-seefried.de/v2.0/replacements";
     // needed for popup dialog, disabled
     // ProgressDialog dialog;
     GridView NotificationGridView;
@@ -120,20 +120,21 @@ public class Home_TwoFragment extends Fragment implements SwipeRefreshLayout.OnR
 
             JSONObject object = new JSONObject(JSON);
 
-            JSONObject datefordata = object.getJSONObject("date");
-            String date = datefordata.getString("string");
+            JSONObject meta = object.getJSONObject("meta");
+            String apiDate = meta.getString("date");
 
-            SimpleDateFormat format1 = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
-            Date dt1 = format1.parse(date);
-            DateFormat format2 = new SimpleDateFormat("EEEE", Locale.GERMANY);
-            String date_day = format2.format(dt1);
+            SimpleDateFormat date_day_format1 = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMANY);
+            Date dt1 = date_day_format1.parse(apiDate);
+            date_day_format1.applyPattern("dd.MM.yyyy");
+            String date = date_day_format1.format(dt1);
+            DateFormat date_day_format2 = new SimpleDateFormat("EEEE", Locale.GERMANY);
+            String date_day = date_day_format2.format(dt1);
 
             output.add("Mitteilungen für " + date_day + ", " + date);
 
-            JSONObject amount = object.getJSONObject("amount");
-            String amount_notifications = amount.getString("notifications");
+            String amount = object.getString("amount");
 
-            if (amount_notifications.equals("0")) {
+            if (amount.equals("0")) {
                 output.add("");
                 output.add("Heute keine Mitteilung");
             } else {
@@ -141,9 +142,8 @@ public class Home_TwoFragment extends Fragment implements SwipeRefreshLayout.OnR
                 JSONArray notificationsArray = object.getJSONArray("notifications");
 
                 for (int i = 0; i < notificationsArray.length(); ++i) {
-                    JSONObject JsonNotifications = notificationsArray.getJSONObject(i);
-                    String content = JsonNotifications.getString("content");
-                    output.add(content);
+                    String value = notificationsArray.getString(i);
+                    output.add(value);
                 }
             }
 
