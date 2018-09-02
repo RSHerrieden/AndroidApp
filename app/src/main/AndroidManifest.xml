@@ -77,12 +77,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             android:label="@string/activity_title_todo">
         </activity>
 
-        <activity
-            android:name="de.seefried.rsh.activity.StatusActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/activity_title_status">
-        </activity>
-
     </application>
 
 </manifest>
