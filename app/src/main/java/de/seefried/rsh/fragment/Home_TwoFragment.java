@@ -52,7 +52,7 @@ import de.seefried.rsh.R;
 public class Home_TwoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
         SwipeRefreshLayout swipeLayout;
 
-    String url = "https://rsh.noah-seefried.de/v2.0/replacements";
+    String url = "https://rsh.noah-seefried.de/v2.0/notifications";
     // needed for popup dialog, disabled
     // ProgressDialog dialog;
     GridView NotificationGridView;
