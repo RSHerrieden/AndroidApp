@@ -104,7 +104,7 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
 
 
         // request data from server
-        StringRequest request = new StringRequest(url + "//" + pref_schoolclass, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(url + "/0/" + pref_schoolclass, new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
                 parseJsonData(string);
