@@ -32,8 +32,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:description="@string/app_description"
         android:supportsRtl="true"
         android:theme="@style/MyTheme"
-        android:versionCode="9"
-        android:versionName="1.0.5"
+        android:versionCode="10"
+        android:versionName="1.0.6"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
             android:name="de.seefried.rsh.activity.MainActivity"
