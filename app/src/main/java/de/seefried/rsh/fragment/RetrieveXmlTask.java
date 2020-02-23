@@ -1,30 +1,29 @@
 package de.seefried.rsh.fragment;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 public class RetrieveXmlTask extends AsyncTask {
 
-    URL url;
-    String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-    String devDate = "2020-02-21";
-    String uri = "https://www.realschule-herrieden.de/vpapp/data_" + currentDate + ".xml";
-
-
+    ArrayList error = new ArrayList();
     ArrayList mitteilung = new ArrayList();
-ArrayList woche = new ArrayList();
+    ArrayList woche = new ArrayList();
     ArrayList klasse = new ArrayList();
     ArrayList fach = new ArrayList();
     ArrayList stunde = new ArrayList();
@@ -34,12 +33,37 @@ ArrayList woche = new ArrayList();
     @Override
     protected Object doInBackground(Object[] objects) {
         try {
+            String date = null;
+            URL url;
+            String weekday_name = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(System.currentTimeMillis());
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar calendar = Calendar.getInstance();
+            if (weekday_name.equals("Saturday")) {
+                calendar.add(Calendar.DAY_OF_YEAR, 2);
+                Date plus2Days = calendar.getTime();
+                date = dateFormat.format(plus2Days);
+            } else if (weekday_name.equals("Sunday")) {
+                calendar.add(Calendar.DAY_OF_YEAR, 1);
+                Date plus1Day = calendar.getTime();
+                date = dateFormat.format(plus1Day);
+            } else {
+                date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+            }
+            String devDate = "2020-02-21";
+            Log.d("DATE", date);
+            String uri = "https://www.realschule-herrieden.de/vpapp/data_" + date + ".xml";
             url = new URL(uri);
 
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(false);
             XmlPullParser xpp = factory.newPullParser();
-            xpp.setInput(url.openConnection().getInputStream(), "UTF_8");
+            try {
+                xpp.setInput(url.openConnection().getInputStream(), "UTF_8");
+            } catch (FileNotFoundException e) {
+                // TODO: proper error handling
+                error.add("404");
+                //e.printStackTrace();
+            }
 
             boolean insideItem = false;
 
@@ -72,11 +96,7 @@ ArrayList woche = new ArrayList();
                         if (insideItem)
                             entfaellt.add(xpp.nextText()); //extract the fach
                     }
-                } else if (eventType == XmlPullParser.END_TAG && xpp.getName().equalsIgnoreCase("item")) {
-                    insideItem = false;
                 }
-
-                eventType = xpp.next(); //move to next element
             }
 
 
@@ -98,24 +118,34 @@ ArrayList woche = new ArrayList();
         }
     }
 
+    public ArrayList error() {
+        return error;
+    }
+
     public ArrayList mitteilung() {
         return mitteilung;
     }
+
     public ArrayList woche() {
         return woche;
     }
+
     public ArrayList klassen() {
         return klasse;
     }
+
     public ArrayList<String> fach() {
         return fach;
     }
+
     public ArrayList<String> stunde() {
         return stunde;
     }
+
     public ArrayList<String> raum() {
         return raum;
     }
+
     public ArrayList<String> entfaellt() {
         return entfaellt;
     }

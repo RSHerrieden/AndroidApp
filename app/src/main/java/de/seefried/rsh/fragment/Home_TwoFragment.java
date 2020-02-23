@@ -1,17 +1,17 @@
 /**
  * RS-Herrieden
  * Copyright (C) 2018  Noah Seefried and Moritz Fromm
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,8 +28,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -81,9 +83,26 @@ public class Home_TwoFragment extends Fragment implements SwipeRefreshLayout.OnR
             SystemClock.sleep(500);
 
 
-            // skip weekend needs to be added
-            String date = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(new Date());
-            String date_day = new SimpleDateFormat("EE", Locale.getDefault()).format(new Date());
+            String date;
+            String date_day;
+
+            String weekday_name = new SimpleDateFormat("EE", Locale.GERMANY).format(System.currentTimeMillis());
+            DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+            Calendar calendar = Calendar.getInstance();
+            if (weekday_name.equals("Sa.")) {
+                calendar.add(Calendar.DAY_OF_YEAR, 2);
+                Date plus2Days = calendar.getTime();
+                date = dateFormat.format(plus2Days);
+                date_day = "Mo.";
+            } else if (weekday_name.equals("So.")) {
+                calendar.add(Calendar.DAY_OF_YEAR, 1);
+                Date plus1Day = calendar.getTime();
+                date = dateFormat.format(plus1Day);
+                date_day = "Mo.";
+            } else {
+                date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+                date_day = new SimpleDateFormat("EE", Locale.GERMANY).format(new Date());
+            }
 
             output.add("Mitteilungen für " + date_day + ", " + date);
 
