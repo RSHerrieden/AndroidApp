@@ -1,7 +1,7 @@
 /**
  * RS-Herrieden
  * Copyright (C) 2018  Noah Seefried and Moritz Fromm
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -108,12 +108,6 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
             stunden = getXML.stunde();
             raeume = getXML.raum();
             entfaellt = getXML.entfaellt();
-            Log.wtf("log", String.valueOf(klassen.size()));
-            if (klassen.size() > 0) {
-                for (int i = 0; i < 13; i++) {
-                    Log.wtf("log", String.valueOf(klassen.get(i)));
-                }
-            }
 
             SystemClock.sleep(500);
 
@@ -122,13 +116,17 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
             String date_day = new SimpleDateFormat("EE", Locale.getDefault()).format(new Date());
 
             String format_pref_schoolclass = pref_schoolclass.replace("%25", "");
-            if (pref_schoolclass.equals("")) {
-                // this is a bugfix for the first start, i cannot load the settings before user open it
-
-                outputdate.add("Vertretungen für alle, " + date_day + " " + date + "      Woche: " + woche.get(0));
+            if (woche.size() == 0) {
+                outputdate.add("Vertretungen am " + date_day + " " + date);
             } else {
+                if (pref_schoolclass.equals("")) {
+                    // this is a bugfix for the first start, i cannot load the settings before user open it
 
-                outputdate.add("Vertretungen für " + format_pref_schoolclass + ", " + date_day + " " + date + "      Woche: " + woche.get(0));
+                    outputdate.add("Vertretungen für alle, " + date_day + " " + date + "      Woche: " + woche.get(0));
+                } else {
+
+                    outputdate.add("Vertretungen für " + format_pref_schoolclass + ", " + date_day + " " + date + "      Woche: " + woche.get(0));
+                }
             }
 
             if (klassen.size() == 0) {
@@ -178,19 +176,25 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
                     }
                 }
                 if (outputplan.size() == 0) {
+                    // output one free line
+                    outputplan.add("");
+                    outputplan.add("");
+                    outputplan.add("");
+                    outputplan.add("");
+                    outputplan.add("");
                     outputplan.add("Aktuell");
                     outputplan.add("keine");
                     outputplan.add("Vertretung");
                     outputplan.add("für");
                     outputplan.add("dich");
                 }
+            }
 
                 Home_OneFragment_PlanAdapter adapter = new Home_OneFragment_PlanAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, outputplan);
                 PlanGrid.setAdapter(adapter);
                 Home_OneFragment_DateAdapter dateadapter = new Home_OneFragment_DateAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, outputdate);
                 LastUpdateGrid.setAdapter(dateadapter);
 
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }

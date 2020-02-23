@@ -20,7 +20,7 @@ public class RetrieveXmlTask extends AsyncTask {
     URL url;
     String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     String devDate = "2020-02-21";
-    String uri = "https://www.realschule-herrieden.de/vpapp/data_" + devDate + ".xml";
+    String uri = "https://www.realschule-herrieden.de/vpapp/data_" + currentDate + ".xml";
 
 
     ArrayList mitteilung = new ArrayList();
