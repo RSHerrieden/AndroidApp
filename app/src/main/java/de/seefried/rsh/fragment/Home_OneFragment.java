@@ -1,7 +1,7 @@
 /**
  * RS-Herrieden
  * Copyright (C) 2018  Noah Seefried and Moritz Fromm
-
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -21,30 +21,17 @@ package de.seefried.rsh.fragment;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,8 +42,6 @@ import de.seefried.rsh.R;
 
 
 public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-
-    String url = "https://rsh.noah-seefried.de/v2.0/replacements";
 
     // ProgressDialog dialog;  // needed for popup dialog, disabled
 
@@ -81,9 +66,9 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
         // Inflate layout
         View view = inflater.inflate(R.layout.fragment_home_one, container, false);
         // Find GridView
-        PlanGrid = (GridView)view.findViewById(R.id.PlanGridView);
-        LastUpdateGrid = (GridView)view.findViewById(R.id.LastUpdateGridView);
-        swipeLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_container);
+        PlanGrid = view.findViewById(R.id.PlanGridView);
+        LastUpdateGrid = view.findViewById(R.id.LastUpdateGridView);
+        swipeLayout = view.findViewById(R.id.swipe_container);
 
         // Popup dialog, disabled
         // dialog = new ProgressDialog(getActivity());
@@ -104,72 +89,49 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
 
 
         // request data from server
-        StringRequest request = new StringRequest(url + "/0/" + pref_schoolclass, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String string) {
-                parseJsonData(string);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(getActivity().getApplicationContext(), "Es ist ein Fehler aufgetreten!", Toast.LENGTH_LONG).show();
-
-                List<String> outputerror = new ArrayList<>();
-                outputerror.add("Keine Internetverbindung vorhanden!");
-
-                Home_OneFragment_DateAdapter dateadapter = new Home_OneFragment_DateAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, outputerror);
-                LastUpdateGrid.setAdapter(dateadapter);
-            }
-        });
-
-        RequestQueue rQueue = Volley.newRequestQueue(getActivity());
-        rQueue.add(request);
-
-        return view;
-    }
-
-    @Override
-    public void onRefresh() {
-        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
-    }
-
-    void parseJsonData(String JSON) {
+        List<String> outputplan = new ArrayList<>();
+        List<String> outputdate = new ArrayList<>();
         try {
-            List<String> outputplan = new ArrayList<>();
-            List<String> outputdate = new ArrayList<>();
 
-            JSONObject object = new JSONObject(JSON);
+            ArrayList<String> woche;
+            ArrayList<String> klassen;
+            ArrayList<String> faecher;
+            ArrayList<String> stunden;
+            ArrayList<String> raeume;
+            ArrayList<String> entfaellt;
 
-            String amount = object.getString("amount");
-            JSONObject meta = object.getJSONObject("meta");
+            RetrieveXmlTask getXML = new RetrieveXmlTask();
+            getXML.execute();
+            woche = getXML.woche();
+            klassen = getXML.klassen();
+            faecher = getXML.fach();
+            stunden = getXML.stunde();
+            raeume = getXML.raum();
+            entfaellt = getXML.entfaellt();
+            Log.wtf("log", String.valueOf(klassen.size()));
+            if (klassen.size() > 0) {
+                for (int i = 0; i < 13; i++) {
+                    Log.wtf("log", String.valueOf(klassen.get(i)));
+                }
+            }
 
-            // date
-            String apiDate = meta.getString("date");
+            SystemClock.sleep(500);
 
-            // week
-            String week = object.getString("week");
+            // skip weekend needs to be added
+            String date = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(new Date());
+            String date_day = new SimpleDateFormat("EE", Locale.getDefault()).format(new Date());
 
-            SimpleDateFormat date_day_format1 = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMANY);
-            Date dt1 = date_day_format1.parse(apiDate);
-            date_day_format1.applyPattern("dd.MM.yyyy");
-            String date = date_day_format1.format(dt1);
-            DateFormat date_day_format2 = new SimpleDateFormat("EE", Locale.GERMANY);
-            String date_day = date_day_format2.format(dt1);
-
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String pref_schoolclass = sp.getString("key_schoolclass", "");
-
+            String format_pref_schoolclass = pref_schoolclass.replace("%25", "");
             if (pref_schoolclass.equals("")) {
                 // this is a bugfix for the first start, i cannot load the settings before user open it
 
-                outputdate.add("Vertretungen für alle, " + date_day + " " + date + "      Woche: " + week);
+                outputdate.add("Vertretungen für alle, " + date_day + " " + date + "      Woche: " + woche.get(0));
             } else {
-                String format_pref_schoolclass = pref_schoolclass.replace("%25", "");
 
-                outputdate.add("Vertretungen für " + format_pref_schoolclass + ", " + date_day + " " + date + "      Woche: " + week);
+                outputdate.add("Vertretungen für " + format_pref_schoolclass + ", " + date_day + " " + date + "      Woche: " + woche.get(0));
             }
 
-            if (amount.equals("0")) {
+            if (klassen.size() == 0) {
                 // output one free line
                 outputplan.add("");
                 outputplan.add("");
@@ -191,50 +153,53 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
                     outputplan.add("dich");
                 }
             } else {
+                for (int i = 0; i < klassen.size(); i++) {
 
-                JSONArray planArray = object.getJSONArray("replacements");
-
-                // replacements
-                for(int i = 0; i < planArray.length(); ++i) {
-                    JSONObject JSONAPI = planArray.getJSONObject(i);
-                    String schoolclass = JSONAPI.getString("schoolclass");
-                    String schoolsubject = JSONAPI.getString("schoolsubject");
-                    String schoolhour = JSONAPI.getString("schoolhour");
-                    String schoolroom = JSONAPI.getString("schoolroom");
-                    String dropped = JSONAPI.getString("dropped");
-                    // String out_test = schoolclass + "   " + representations + "   " + schoolsubject + "   " + schoolhour;
-
-                    String format_schoolhour = schoolhour + ". Stunde";
-                    outputplan.add(schoolclass);
-                    outputplan.add(format_schoolhour);
-
-                    if (schoolsubject.equals("")) {
-                        outputplan.add("➔\t");
-                    } else {
-                        outputplan.add(schoolsubject);
-                    }
-
-                    outputplan.add(schoolroom);
-
-                    // check if dropped
-                    if (dropped.equals("false")) {
-                        outputplan.add("✓");
-                    } else {
-                        outputplan.add("×");
+                    if (pref_schoolclass.equals("alle")) {
+                        outputplan.add(klassen.get(i));
+                        outputplan.add(stunden.get(i));
+                        outputplan.add(faecher.get(i));
+                        outputplan.add(raeume.get(i));
+                        if (entfaellt.get(i).equals("false")) {
+                            outputplan.add("✓");
+                        } else {
+                            outputplan.add("×");
+                        }
+                    } else if (klassen.get(i).equals(format_pref_schoolclass)) {
+                        outputplan.add(klassen.get(i));
+                        outputplan.add(stunden.get(i));
+                        outputplan.add(faecher.get(i));
+                        outputplan.add(raeume.get(i));
+                        if (entfaellt.get(i).equals("false")) {
+                            outputplan.add("✓");
+                        } else {
+                            outputplan.add("×");
+                        }
                     }
                 }
-            }
+                if (outputplan.size() == 0) {
+                    outputplan.add("Aktuell");
+                    outputplan.add("keine");
+                    outputplan.add("Vertretung");
+                    outputplan.add("für");
+                    outputplan.add("dich");
+                }
 
-            Home_OneFragment_PlanAdapter adapter = new Home_OneFragment_PlanAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, outputplan);
-            PlanGrid.setAdapter(adapter);
-            Home_OneFragment_DateAdapter dateadapter = new Home_OneFragment_DateAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, outputdate);
-            LastUpdateGrid.setAdapter(dateadapter);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+                Home_OneFragment_PlanAdapter adapter = new Home_OneFragment_PlanAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, outputplan);
+                PlanGrid.setAdapter(adapter);
+                Home_OneFragment_DateAdapter dateadapter = new Home_OneFragment_DateAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, outputdate);
+                LastUpdateGrid.setAdapter(dateadapter);
+
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        // Close popup dialog, disabled
-        // dialog.dismiss();
+
+        return view;
+    }
+
+    @Override
+    public void onRefresh() {
+        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
     }
 }
