@@ -12,6 +12,8 @@ android:
 
 before_install:
   - yes | sdkmanager "platforms;android-27"
+  - yes | sdkmanager "platforms;android-28"
+
 
 licenses:
     - 'android-sdk-license-.+'
