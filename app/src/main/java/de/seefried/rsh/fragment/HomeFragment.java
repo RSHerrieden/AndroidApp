@@ -28,11 +28,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.github.javiersantos.appupdater.AppUpdater;
-import com.github.javiersantos.appupdater.enums.Display;
-import com.github.javiersantos.appupdater.enums.UpdateFrom;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,14 +62,6 @@ public class HomeFragment extends Fragment {
 
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-        // Check for updates on startup
-        new AppUpdater(getActivity())
-                .setUpdateFrom(UpdateFrom.GITHUB)
-                .setGitHubUserAndRepo("RSHerrieden", "AndroidApp")
-                .setDisplay(Display.NOTIFICATION)
-                .setCancelable(false) // Dialog could not be dismissable
-                .start();
 
         return view;
     }
