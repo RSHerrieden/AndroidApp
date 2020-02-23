@@ -23,6 +23,7 @@ public class RetrieveXmlTask extends AsyncTask {
     String uri = "https://www.realschule-herrieden.de/vpapp/data_" + devDate + ".xml";
 
 
+    ArrayList mitteilung = new ArrayList();
 ArrayList woche = new ArrayList();
     ArrayList klasse = new ArrayList();
     ArrayList fach = new ArrayList();
@@ -38,7 +39,7 @@ ArrayList woche = new ArrayList();
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(false);
             XmlPullParser xpp = factory.newPullParser();
-            xpp.setInput(getInputStream(url), "UTF_8");
+            xpp.setInput(url.openConnection().getInputStream(), "UTF_8");
 
             boolean insideItem = false;
 
@@ -46,6 +47,9 @@ ArrayList woche = new ArrayList();
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if (eventType == XmlPullParser.START_TAG) {
 
+                    if (xpp.getName().equalsIgnoreCase("SchuelerMitteilung")) {
+                        mitteilung.add(xpp.getAttributeValue(null, "Text"));
+                    }
                     if (xpp.getName().equalsIgnoreCase("Woche")) {
                         woche.add(xpp.nextText());
                     }
@@ -86,7 +90,6 @@ ArrayList woche = new ArrayList();
         return klasse;
     }
 
-
     public InputStream getInputStream(URL url) {
         try {
             return url.openConnection().getInputStream();
@@ -95,6 +98,9 @@ ArrayList woche = new ArrayList();
         }
     }
 
+    public ArrayList mitteilung() {
+        return mitteilung;
+    }
     public ArrayList woche() {
         return woche;
     }
