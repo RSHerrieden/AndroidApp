@@ -82,26 +82,42 @@ public class Home_TwoFragment extends Fragment implements SwipeRefreshLayout.OnR
 
             SystemClock.sleep(500);
 
-
             String date;
             String date_day;
 
-            String weekday_name = new SimpleDateFormat("EE", Locale.GERMANY).format(System.currentTimeMillis());
-            DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+            String weekday_name = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(System.currentTimeMillis());
+
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.GERMANY);
+
+            String currentTimeString = timeFormat.format(new Date(System.currentTimeMillis()));
+            String timeForNextDayString = "13:30";
+            Date currentTime = timeFormat.parse(currentTimeString);
+            Date timeForNextDay = timeFormat.parse(timeForNextDayString);
+
+            DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+            SimpleDateFormat date_dayFormat = new SimpleDateFormat("EE", Locale.GERMANY);
+
             Calendar calendar = Calendar.getInstance();
-            if (weekday_name.equals("Sa.")) {
+            if (weekday_name.equals("Saturday")) {
                 calendar.add(Calendar.DAY_OF_YEAR, 2);
                 Date plus2Days = calendar.getTime();
                 date = dateFormat.format(plus2Days);
                 date_day = "Mo.";
-            } else if (weekday_name.equals("So.")) {
+            } else if (weekday_name.equals("Sunday")) {
                 calendar.add(Calendar.DAY_OF_YEAR, 1);
                 Date plus1Day = calendar.getTime();
                 date = dateFormat.format(plus1Day);
                 date_day = "Mo.";
             } else {
-                date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-                date_day = new SimpleDateFormat("EE", Locale.GERMANY).format(new Date());
+                if (currentTime.before(timeForNextDay)) {
+                    date = dateFormat.format(new Date());
+                    date_day = date_dayFormat.format(new Date());
+                } else {
+                    calendar.add(Calendar.DAY_OF_YEAR, 1);
+                    Date plus1Day = calendar.getTime();
+                    date = dateFormat.format(plus1Day);
+                    date_day = date_dayFormat.format(plus1Day);
+                }
             }
 
             output.add("Mitteilungen für " + date_day + ", " + date);

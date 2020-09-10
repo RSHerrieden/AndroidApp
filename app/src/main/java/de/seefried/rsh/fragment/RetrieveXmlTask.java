@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,8 +36,18 @@ public class RetrieveXmlTask extends AsyncTask {
         try {
             String date = null;
             URL url;
+
             String weekday_name = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(System.currentTimeMillis());
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMANY);
+
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.GERMANY);
+
+            String currentTimeString = timeFormat.format(new Date(System.currentTimeMillis()));
+            String timeForNextDayString = "13:30";
+            Date currentTime = timeFormat.parse(currentTimeString);
+            Date timeForNextDay = timeFormat.parse(timeForNextDayString);
+
             Calendar calendar = Calendar.getInstance();
             if (weekday_name.equals("Saturday")) {
                 calendar.add(Calendar.DAY_OF_YEAR, 2);
@@ -47,9 +58,15 @@ public class RetrieveXmlTask extends AsyncTask {
                 Date plus1Day = calendar.getTime();
                 date = dateFormat.format(plus1Day);
             } else {
-                date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+                if (currentTime.before(timeForNextDay)) {
+                    date = dateFormat.format(new Date());
+                } else {
+                    calendar.add(Calendar.DAY_OF_YEAR, 1);
+                    Date plus1Day = calendar.getTime();
+                    date = dateFormat.format(plus1Day);
+                }
             }
-            String devDate = "2020-02-21";
+            String devDate = "2020-09-12";
             Log.d("DATE", date);
             String uri = "https://www.realschule-herrieden.de/vpapp/data_" + date + ".xml";
             url = new URL(uri);
@@ -97,6 +114,7 @@ public class RetrieveXmlTask extends AsyncTask {
                             entfaellt.add(xpp.nextText()); //extract the fach
                     }
                 }
+                eventType = xpp.next();
             }
 
 
@@ -105,6 +123,8 @@ public class RetrieveXmlTask extends AsyncTask {
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return klasse;
