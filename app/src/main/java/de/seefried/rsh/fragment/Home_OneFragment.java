@@ -190,7 +190,7 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
                     outputplan.add("");
                     outputplan.add("");
                     // output information if no representations
-                    if (pref_schoolclass.equals("alle")) {
+                    if (pref_schoolclass.equals("alle") || pref_schoolclass.equals("")) {
                         outputplan.add("");
                         outputplan.add("Keine");
                         outputplan.add("");
@@ -206,7 +206,7 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
                 } else {
                     for (int i = 0; i < klassen.size(); i++) {
 
-                        if (pref_schoolclass.equals("alle")) {
+                        if (pref_schoolclass.equals("alle") || pref_schoolclass.equals("")) {
                             outputplan.add(klassen.get(i));
                             outputplan.add(stunden.get(i));
                             outputplan.add(faecher.get(i));
