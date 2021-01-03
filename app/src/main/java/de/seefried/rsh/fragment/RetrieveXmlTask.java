@@ -34,7 +34,7 @@ public class RetrieveXmlTask extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
         try {
-            String date = null;
+            String date;
             URL url;
 
             String weekday_name = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(System.currentTimeMillis());
@@ -85,6 +85,7 @@ public class RetrieveXmlTask extends AsyncTask {
             boolean insideItem = false;
 
             int eventType = xpp.getEventType();
+            // TODO: Sort items after class and schoolhour
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if (eventType == XmlPullParser.START_TAG) {
 
@@ -99,19 +100,19 @@ public class RetrieveXmlTask extends AsyncTask {
                         insideItem = true;
                     } else if (xpp.getName().equalsIgnoreCase("Klasse")) {
                         if (insideItem)
-                            klasse.add(xpp.nextText()); // extract the klasse
+                            klasse.add(xpp.nextText());
                     } else if (xpp.getName().equalsIgnoreCase("Fach")) {
                         if (insideItem)
-                            fach.add(xpp.nextText()); //extract the fach
+                            fach.add(xpp.nextText());
                     } else if (xpp.getName().equalsIgnoreCase("Std")) {
                         if (insideItem)
-                            stunde.add(xpp.nextText()); //extract the Std
+                            stunde.add(xpp.nextText());
                     } else if (xpp.getName().equalsIgnoreCase("Raum")) {
                         if (insideItem)
-                            raum.add(xpp.nextText()); //extract the fach
+                            raum.add(xpp.nextText());
                     } else if (xpp.getName().equalsIgnoreCase("Entfaellt")) {
                         if (insideItem)
-                            entfaellt.add(xpp.nextText()); //extract the fach
+                            entfaellt.add(xpp.nextText());
                     }
                 }
                 eventType = xpp.next();
