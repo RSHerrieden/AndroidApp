@@ -114,6 +114,7 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
             raeume = getXML.raum();
             entfaellt = getXML.entfaellt();
 
+            // TODO: Wait properly for XmlTask to finish
             SystemClock.sleep(1000);
 
             String date;
@@ -209,17 +210,25 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
                         if (pref_schoolclass.equals("alle") || pref_schoolclass.equals("")) {
                             outputplan.add(klassen.get(i));
                             outputplan.add(stunden.get(i));
-                            outputplan.add(faecher.get(i));
+                            if (faecher.get(i).equals("")) {
+                                outputplan.add("➔");
+                            } else {
+                                outputplan.add(faecher.get(i));
+                            }
                             outputplan.add(raeume.get(i));
                             if (entfaellt.get(i).equals("false")) {
                                 outputplan.add("✓");
                             } else {
                                 outputplan.add("×");
                             }
-                        } else if (klassen.get(i).equals(format_pref_schoolclass)) {
+                        } else if (klassen.get(i).contains(format_pref_schoolclass)) {
                             outputplan.add(klassen.get(i));
                             outputplan.add(stunden.get(i));
-                            outputplan.add(faecher.get(i));
+                            if (faecher.get(i).equals("")) {
+                                outputplan.add("➔");
+                            } else {
+                                outputplan.add(faecher.get(i));
+                            }
                             outputplan.add(raeume.get(i));
                             if (entfaellt.get(i).equals("false")) {
                                 outputplan.add("✓");
@@ -244,7 +253,6 @@ public class Home_OneFragment extends Fragment implements SwipeRefreshLayout.OnR
                 }
             }
 
-            // todo
             if (error.equals("404")) {
                 outputplan.add("error");
                 Toast.makeText(getActivity().getApplicationContext(), "Es ist ein Fehler aufgetreten!", Toast.LENGTH_LONG).show();
